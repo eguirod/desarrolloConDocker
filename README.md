@@ -2,5 +2,5 @@
 En este repositorio encontramos recursos para docker.
 # CURSOS
 * Fundamentos Generales: Orquestación y Automatización IT
-*   Fichero: fundamentosGeneralesOrquestacionAutomatizacionIT.md
+  * Fichero: fundamentosGeneralesOrquestacionAutomatizacionIT.md
 *   
