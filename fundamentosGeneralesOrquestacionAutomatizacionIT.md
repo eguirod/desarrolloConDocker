@@ -43,6 +43,7 @@ Diseño a alto nivel: pasos para automatizar un procesos o necesidad de la infra
 # ORQUESTACIÓN
 ## Definición y beneficios
 La **orquestación** permite establecer un **control** y **auditoría** de las diferentes automatismos realizados en una **infra** IT.  
+
 **¿Por qué orquestar?**
 * *Mantenimiento centralizado*: permite tener un mayor control sobre qué hacemos, cómo lo hacemos y los resultados.
 * *Auditoría*: podemos evaluar si el automatismo hace lo que debe o no, de forma de que si hay un error podamos corregirlo manualmente.
