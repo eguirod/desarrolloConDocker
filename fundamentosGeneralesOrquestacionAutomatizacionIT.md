@@ -12,7 +12,7 @@ Diseño a alto nivel: pasos para automatizar un procesos o necesidad de la infra
 1. Identificación de **entradas** de información: hay que tener claro el flujo completo del proceso el que sea, saber en un alto nivel hasta dónde llegamos. Por ejemplo, tenemos la necesidad de agregar usuarioas en nuestra infra, damos de alta al usuario en la app que usemos, que nos pedirá una serie de datos del usuario y por ejemplo en nuestra empresa tenemos 3 roles, sistemas, desarrollo, marketing y cada uno tendrá una serie de permisos y tareas.
 2. Generar un mecanismo de **disparador** (**trigger**) de la automatización. En el ejemplo sería generar un mecanismo que nos dispare la automatización, los procesos para que se cree el usuario, establezca los roles etc...
 3. **Evaluar** la **entrada** de información: la automatización debe evaluar los datos introducidos para identificar qué hacer en función de ellos. Por ejemplo en nuestro caso en función del rol que debemos deberá dar unos permisos y tareas diferentes.
-4. **Ejecutar** las **tareas** de la automatización.
+4. **Ejecutar** las **tareas** de la automatización.  
 **Tipos**:
 * *Manual*: ingresar info + ejecutar disparador. Se lanzará de forma manual con los datos que tenga.
 * *Programado*: tarea repetitiva. Tareas rutinarias que se repiten en el tiempo y se programan para que se hagan solas. Por ejemplo, en servidores Windows los reinicios del servidor.
