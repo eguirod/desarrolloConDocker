@@ -63,6 +63,7 @@ La **orquestación** permite establecer un **control** y **auditoría** de las d
 * *Protocolo remoto*.
 * *Agente*.
 * *Servicio*.
+
 **Tipos**:
 * *Tareas programadas de SO*:
  * Disparadores: cron, anacron o eventos.
