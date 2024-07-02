@@ -66,24 +66,24 @@ La **orquestación** permite establecer un **control** y **auditoría** de las d
 
 **Tipos**:
 * *Tareas programadas de SO*:
- * Disparadores: cron, anacron o eventos.
- * Acciones: ejecutar script, proceso, app.
- * Método de comunicación: local.
- * Desventajas: no podemos controlar 100% los procesos automatizados.
+    * Disparadores: cron, anacron o eventos.
+    * Acciones: ejecutar script, proceso, app.
+    * Método de comunicación: local.
+    * Desventajas: no podemos controlar 100% los procesos automatizados.
 * *Automatizaación basada en Cloud*:
- * Provee como servicio: API o portal web.
- * Control y coordina: recetas y workflows en Cloud, automatizaciones de bajo nivel y recursos del Cloud.
- * Método de comunicación: servicio Cloud.
-* *Mantenimiento de la configuración*:
- * Requiere: servidor central y agentes o protocolos remoto.
- * Herramientas: puppet, chef o ansible.
- * Infra declarativa: DSL.
- * Métodos de comunicación: agente (chef o puppet) o protocolo remoto (ansible).
+    * Provee como servicio: API o portal web.
+    * Control y coordina: recetas y workflows en Cloud, automatizaciones de bajo nivel y recursos del Cloud.
+    * Método de comunicación: servicio Cloud.
+ * *Mantenimiento de la configuración*:
+    * Requiere: servidor central y agentes o protocolos remoto.
+    * Herramientas: puppet, chef o ansible.
+    * Infra declarativa: DSL.
+    * Métodos de comunicación: agente (chef o puppet) o protocolo remoto (ansible).
 * *Integración continua*:
- * Requiere: servidor de integración continua, base de datos y agentes de construcción. Por ejemplo, GitLab CI o Jenkins.
- * Provee automatización: proceso de construcción de software y testing.
- * Método de comunicación: agente.
+    * Requiere: servidor de integración continua, base de datos y agentes de construcción. Por ejemplo, GitLab CI o Jenkins.
+    * Provee automatización: proceso de construcción de software y testing.
+    * Método de comunicación: agente.
 * *Despliegue continuo*:
- * Requiere: servidor de despliegue continuo, base de datos y agentes.
- * Provee automatización: despliegue del softwareen diferentes entornos.
- * Método de comunicación: agente.
+    * Requiere: servidor de despliegue continuo, base de datos y agentes.
+    * Provee automatización: despliegue del softwareen diferentes entornos.
+    * Método de comunicación: agente.
