@@ -10,9 +10,9 @@ Venimos de:
 ## Definición y tipos
 La **automatización** es una técnica, método, sistema o conjunto de procesos con el objetivo de reducir al **mínimo** la **intervención humana**.  
 Diseño a alto nivel: pasos para automatizar un procesos o necesidad de la infra:
-1. Identificación de **entradas** de información: hay que tener claro el flujo completo del proceso el que sea, saber en un alto nivel hasta dónde llegamos. Por ejemplo, tenemos la necesidad de agregar usuarioas en nuestra infra, damos de alta al usuario en la app que usemos, que nos pedirá una serie de datos del usuario y por ejemplo en nuestra empresa tenemos 3 roles, sistemas, desarrollo, marketing y cada uno tendrá una serie de permisos y tareas.
+1. Identificación de **entradas** de información: hay que tener claro el flujo completo del proceso el que sea, saber en un alto nivel hasta dónde llegamos. Por ejemplo, tenemos la necesidad de agregar usuarios en nuestra infra, damos de alta al usuario en la app que usemos, que nos pedirá una serie de datos del usuario y por ejemplo en nuestra empresa tenemos 3 roles, sistemas, desarrollo, marketing y cada uno tendrá una serie de permisos y tareas.
 2. Generar un mecanismo de **disparador** (**trigger**) de la automatización. En el ejemplo sería generar un mecanismo que nos dispare la automatización, los procesos para que se cree el usuario, establezca los roles etc...
-3. **Evaluar** la **entrada** de información: la automatización debe evaluar los datos introducidos para identificar qué hacer en función de ellos. Por ejemplo en nuestro caso en función del rol que debemos deberá dar unos permisos y tareas diferentes.
+3. **Evaluar** la **entrada** de información: la automatización debe evaluar los datos introducidos para identificar qué hacer en función de ellos. Por ejemplo en nuestro caso en función del rol que asignemos deberá dar unos permisos y tareas diferentes.
 4. **Ejecutar** las **tareas** de la automatización.
 
 **Tipos**:
@@ -51,9 +51,9 @@ La **orquestación** permite establecer un **control** y **auditoría** de las d
 * *Mantenimiento centralizado*: permite tener un mayor control sobre qué hacemos, cómo lo hacemos y los resultados.
 * *Auditoría*: podemos evaluar si el automatismo hace lo que debe o no, de forma de que si hay un error podamos corregirlo manualmente.
 * *Mejora los flujos de trabajo*.
-* *Portal de auto-servicios*, pudiendo delegar tareas de administración a personas que quizás no tenga los conocimientos.
+* *Portal de auto-servicios*, pudiendo delegar tareas de administración a personas que quizás, no tenga los conocimientos.
 ## Elementos de orquestación
-* **Runbooks**: conjunto de procedimientos automatizados. Por ejemplo, la gestión de agregar un usuario en un AD, los pasos que está automatizados serían los runbooks.
+* **Runbooks**: conjunto de procedimientos automatizados. Por ejemplo, en la gestión de agregar un usuario en un AD, los pasos que están automatizados serían los runbooks.
 * **Workflows**: conjunto de *runbooks* conectados, dando solución extremo a extremo. Por ejemplo, tener un desarrollo y que tengamos "un botón" que nos permita desplegarla.
 * **Pipelines**: usado para el desarrollo continúa del software, se utiliza para desarrollar infra como código.
 
@@ -85,5 +85,5 @@ La **orquestación** permite establecer un **control** y **auditoría** de las d
     * Método de comunicación: agente.
 * *Despliegue continuo*:
     * Requiere: servidor de despliegue continuo, base de datos y agentes.
-    * Provee automatización: despliegue del softwareen diferentes entornos.
+    * Provee automatización: despliegue del software en diferentes entornos.
     * Método de comunicación: agente.
