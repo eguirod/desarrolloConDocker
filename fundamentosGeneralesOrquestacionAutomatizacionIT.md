@@ -5,6 +5,7 @@ Venimos de:
 * Bash **scripts**.
 * Monitorización proactiva (**NRPE** scripts, **Zabbizx** alerts, Nagios)
 * Primeras herramientas como **cfengine**.
+
 # AUTOMATIZACIÓN
 ## Definición y tipos
 La **automatización** es una técnica, método, sistema o conjunto de procesos con el objetivo de reducir al **mínimo** la **intervención humana**.  
@@ -19,6 +20,7 @@ Diseño a alto nivel: pasos para automatizar un procesos o necesidad de la infra
 * *Programado*: tarea repetitiva. Tareas rutinarias que se repiten en el tiempo y se programan para que se hagan solas. Por ejemplo, en servidores Windows los reinicios del servidor.
 * *Evento*: el trigger se dispara ante un problema (es típico en la monitorización proactiva). Por ejemplo, si hubiera un FS que estuviera a punto de llenarse, se lanzaría una automatización que liberara espacio.
 * *Auto-servicio*: gestión automatizada de tickets. Por ejemplo, tener un portal que cuando el usuario tenga una necesidad concreta, este portal realice las tareas necesarias para solventarla.
+
 ## Beneficios de la automatización
 * **Automatización manual**:
   * Reduce el tiempo en completar la tarea.
@@ -40,6 +42,7 @@ Diseño a alto nivel: pasos para automatizar un procesos o necesidad de la infra
   * Clientes finales más contentos.
   * Se reduce la carga de trabajo y se ahorra tiempo.
   * Herramientas: OTRS (gestión de tickets), Zammad(gestión de tickets), puppet, chef.
+
 # ORQUESTACIÓN
 ## Definición y beneficios
 La **orquestación** permite establecer un **control** y **auditoría** de las diferentes automatismos realizados en una **infra** IT.  
@@ -53,5 +56,33 @@ La **orquestación** permite establecer un **control** y **auditoría** de las d
 * **Runbooks**: conjunto de procedimientos automatizados. Por ejemplo, la gestión de agregar un usuario en un AD, los pasos que está automatizados serían los runbooks.
 * **Workflows**: conjunto de *runbooks* conectados, dando solución extremo a extremo. Por ejemplo, tener un desarrollo y que tengamos "un botón" que nos permita desplegarla.
 * **Pipelines**: usado para el desarrollo continúa del software, se utiliza para desarrollar infra como código.
+
 ## Tipos de orquestación
-# CONCLUSIONES
+**Métodos de comunicación**:
+* *Local*.
+* *Protocolo remoto*.
+* *Agente*.
+* *Servicio*.
+**Tipos**:
+* *Tareas programadas de SO*:
+ * Disparadores: cron, anacron o eventos.
+ * Acciones: ejecutar script, proceso, app.
+ * Método de comunicación: local.
+ * Desventajas: no podemos controlar 100% los procesos automatizados.
+* *Automatizaación basada en Cloud*:
+ * Provee como servicio: API o portal web.
+ * Control y coordina: recetas y workflows en Cloud, automatizaciones de bajo nivel y recursos del Cloud.
+ * Método de comunicación: servicio Cloud.
+* *Mantenimiento de la configuración*:
+ * Requiere: servidor central y agentes o protocolos remoto.
+ * Herramientas: puppet, chef o ansible.
+ * Infra declarativa: DSL.
+ * Métodos de comunicación: agente (chef o puppet) o protocolo remoto (ansible).
+* *Integración continua*:
+ * Requiere: servidor de integración continua, base de datos y agentes de construcción. Por ejemplo, GitLab CI o Jenkins.
+ * Provee automatización: proceso de construcción de software y testing.
+ * Método de comunicación: agente.
+* *Despliegue continuo*:
+ * Requiere: servidor de despliegue continuo, base de datos y agentes.
+ * Provee automatización: despliegue del softwareen diferentes entornos.
+ * Método de comunicación: agente.
