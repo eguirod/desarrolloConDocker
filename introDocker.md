@@ -24,19 +24,19 @@ La virtualización utiliza el software para imitar las caracterísitcas del hard
 * Muchos sistemas dependen de un solo equipo físico.
 * Penalizaciones en rendimiento.
 
-**Tipos de virtualización**
+**Tipos de virtualización**  
 * *Emulación*: El sistema de virtualización imita o suplanta vía software una arquitectura al completo (procesador, memoria, conjunto de instrucciones, comunicaciones...). Ejemplo: QEMU, Microsoft Virtual PC, Wine, ...
 * *Virtualización por hardware de tipo 1*: Simula un hardware suficiente para permitir que un sistema operativo no adaptado se ejecute de forma aislada. Controla directamente el hardware físico del host ofreciéndolo directamente a la máquina virtual. Ejemplos: Xen, Kernel-based Virtual Machine (KVM), Microsoft Hyper-V, VMware ESXi,...
 * *Virtualización completa de tipo 2*: En este caso este software no controla directamente el hardware físico, por lo que el rendimiento puede ser menor que el anterior. Ejemplos: VMware Workstation, Parallels Desktop, VirtualBox, VMware Player, ...
 * *Virtualización ligera*: O también llamada virtualización a nivel de sistema operativo, o virtualización basada en contenedores. Es un método de virtualización en el que, sobre el núcleo del sistema operativo se ejecuta una capa de virtualización que permite que existan múltiples instancias aisladas de espacios de usuario. A cada espacio de usuario aislado lo llamamos contenedor.
 
-**Contenedores**
+**Contenedores**  
 Un contenedor es un conjunto de procesos aislados, que se ejecutan en un servidor, y que acceden a un sistema de ficheros propio, tienen una configuración de red propia y acceden a los recursos del host (memoria y CPU). Utilizan para su funcionamiento el núcleo del host donde se ejecutan.  
 Podemos hacer la siguiente clasificación de contenedores dependiendo de su uso:  
 * *Contenedores de Sistemas*: El uso que se hace de ellos es muy similar al que hacemos sobre una máquina virtual: se accede a ellos (normalmente por ssh), se instalan servicios, se actualizan, ejecutan un conjunto de procesos... Ejemplo: LXC(Linux Container).
 * *Contenedores de Aplicación*: Se suelen usar para el despliegue de aplicaciones web. Ejemplo: Docker, Podman...
 
-**Contenedores y aplicaciones**
+**Contenedores y aplicaciones**  
 ¿Qué aplicaciones web son más idóneas para desplegar en contenedores?  
 * Si tenemos *aplicaciones monolíticas*, vamos a usar un esquema multicapa, es decir cada servicio (servicio web, servicio de base de datos... ) se va a desplegar en un contenedor.  
 * Realmente, las aplicaciones que mejor se ajustan al despliegue en contenedores son la desarrolladas con *microservicios*:
