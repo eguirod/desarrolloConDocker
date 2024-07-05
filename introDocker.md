@@ -186,7 +186,7 @@ Los requisitos mínimos necesarios son:
 * Virtualización KVM.
 * Entorno gráfico Gnome, KDE o MATE.
 * 4 Gb de RAM.
-* A partir de Ubuntu 22.04.
+* A partir de Ubuntu 22.04.  
 Pasos a seguir:
 1. Configuramos los repositorios de Docker:
 ```
