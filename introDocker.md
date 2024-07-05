@@ -178,3 +178,92 @@ Y finalmente, comprobamos la versión con la que vamos a trabajar: `docker --ver
 Si queremos más información de las versiones de los componentes con los que vamos a trabajar, ejecutamos: `docker version`.   
 Para más información del sistema que hemos instalado podemos ejecutar: `docker info`.  
 
+### Instalación de Docker Desktop en Linux
+
+Podemos instalar Docker Desktop en distintas distribuciones Linux: Debian, Fedora, Ubuntu,... En este apartado vamos a realizar la instalación en la distribución Ubuntu.  
+Los requisitos mínimos necesarios son:
+* CPU con arquitectura de 64 bits y soporte de virtualización.
+* Virtualización KVM.
+* Entorno gráfico Gnome, KDE o MATE.
+* 4 Gb de RAM.
+* A partir de Ubuntu 22.04.
+Pasos a seguir:
+1. Configuramos los repositorios de Docker:
+```
+sudo apt-get update
+sudo apt-get install ca-certificates curl gnupg
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+
+echo \
+"deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+"$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+```
+2. Descargamos el paquete deb de la página oficial de instalación.
+3. Instalamos Docker Desktop:
+```
+sudo apt-get update
+sudo apt-get install ./docker-desktop-<version>-<arch>.deb
+```
+La `<version>` y el `<arch>` dependerán de qué versión y arquitectura te hayas descargado.
+4. Tendremos a nuestra disposición un icono que permite iniciar Docker Desktop. En este momento se iniciará la máquina virtual donde se está ejecutando el demonio Docker. También tenemos a nuestra disposición en la máquina donde hemos instalado Docker Desktop el cliente Docker:
+```
+$ docker version
+Client: Docker Engine - Community
+ Cloud integration: v1.0.35+desktop.10
+ Version:           25.0.3
+ ...
+Server: Docker Desktop 4.27.2 (137060)
+ Engine:
+  Version:          25.0.3
+  ...
+```  
+
+#### Autentificación en Docker Hub desde Docker Desktop  
+
+**Docker Hub** es el registro público de imágenes Docker. De este registro vamos a descargar las imágenes que necesitemos. Si queremos subir al registro nuestras propias imágenes tendremos que registrarnos en este servicio.  
+Desde **Docker Desktop** podemos autentificarnos en Docker Hub con nuestra cuenta, de esta manera podremos gestionar nuestras imágenes en el registro.  
+En distribuciones Linux vamos a usas claves GPG para cifrar las credenciales de acceso, y estas credenciales se van almacenar usando la utilidad pass.  
+Lo primero que tenemos que hacer es inicializar un par de claves GPG (pública y privada), para ello:
+```
+$ gpg --generate-key
+...
+gpg: clave 09FFD80DB166C498 marcada como de confianza absoluta
+gpg: creado el directorio '/home/usuario/.gnupg/openpgp-revocs.d'
+gpg: certificado de revocación guardado como '/home/usuario/.gnupg/openpgp-revocs.d/B4901885C051839E8CBEA0E609FFD80DB166C498.rev'
+claves pública y secreta creadas y firmadas.
+
+pub   rsa3072 2024-02-15 [SC] [caduca: 2026-02-14]
+      B4901885C051839E8CBEA0E609FFD80DB166C498
+uid                      José Domingo Muñoz <josedom24@example.com>
+sub   rsa3072 2024-02-15 [E] [caduca: 2026-02-14]
+```
+Durante la generación nos pedirá nuestro nombre y apellidos, nuestro correo electrónico y nos pedirá una "frase de paso" para asegurar el uso de la clave privada que estamos creando.  
+A continuación inicializaremos la utilidad pass usando la clave pública que hemos creado, tenemos que indicar el campo ID de la clave pública:
+```
+$ pass init B4901885C051839E8CBEA0E609FFD80DB166C498
+mkdir: se ha creado el directorio '/home/usuario/.password-store/'
+Password store initialized for B4901885C051839E8CBEA0E609FFD80DB166C498
+```  
+En el directorio `/home/usuario/.password-store/` se guardarán las credenciales cifradas de acceso a Docker Hub.  
+Para finalizar, desde Docker Desktop podemos pulsar sobre el botón Sign In para loguearnos en Docker Hub. Y podremos comprobar que estamos autentificados de forma correcta.
+
+### Instalación de Docker Desktop en Windows  
+
+Podemos instalar Docker Desktop en distintas versiones del sistema operativo Windows: En este apartado vamos a realizar la instalación en windows 10 Pro (versión 22H2). En sistemas Windows Docker Desktop instala el demonio Docker o sobre una máquina Linux usando WSL (Subsistema de Windows para Linux) o usando una máquina virtual ejecutada sobre el hipervisor Hyper-V. Nosotros vamos a usar la primera opción de instalación.  
+Los requisitos mínimos necesarios son:  
+* CPU con arquitectura de 64 bits y soporte de virtualización en BIOS.
+* WSL versión 1.1.3.0 o superior, con posibilidad de pasar a WSL 2.
+* Windows 11 64-bit: Home, Pro. Enterprise o Education (versión 21H2 o superior).
+* Windows 10 64-bit: Recomendado Home, Pro. Enterprise o Education (versión 22H2 build 19045 o superior), aunque se puede usar Home, Pro. Enterprise o Education (versión 21H2 build 19044 o superior).
+* 4 Gb de RAM.
+Pasos a seguir:
+1. Descargamos el instalador mediante el botón de descarga de la página de instalación.
+2. Ejecutamos el instalador haciendo doble click en `Docker Desktop Installer.exe`. De forma predeterminada, Docker Desktop se instala en `C:\Archivos de programa\Docker\Docker`.
+3. Durante la instalación elegiremos la opción Utilizar WSL 2 en lugar de Hyper-V. Si su sistema sólo admite una de las dos opciones, no podrá seleccionar qué backend utilizar.
+4. Siga las instrucciones del asistente de instalación para autorizar al instalador y proceder con la instalación.
+5. Cuando la instalación se haya realizado correctamente, seleccione Close & restart para completar el proceso de instalación.
+6. Después del reinicio tendremos un icono para ejecutar Docker Desktop, y si queremos pulsando sobre el botón Sign in nos podremos autentificar con nuestra cuenta de Docker Hub.  
+Por último, si accedemos a una terminal ejecutando PowerShell o cmd, podemos usar el cliente Docker.
