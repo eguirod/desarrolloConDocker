@@ -259,7 +259,8 @@ Los requisitos mínimos necesarios son:
 * WSL versión 1.1.3.0 o superior, con posibilidad de pasar a WSL 2.
 * Windows 11 64-bit: Home, Pro. Enterprise o Education (versión 21H2 o superior).
 * Windows 10 64-bit: Recomendado Home, Pro. Enterprise o Education (versión 22H2 build 19045 o superior), aunque se puede usar Home, Pro. Enterprise o Education (versión 21H2 build 19044 o superior).
-* 4 Gb de RAM.
+* 4 Gb de RAM.  
+
 Pasos a seguir:
 1. Descargamos el instalador mediante el botón de descarga de la página de instalación.
 2. Ejecutamos el instalador haciendo doble click en `Docker Desktop Installer.exe`. De forma predeterminada, Docker Desktop se instala en `C:\Archivos de programa\Docker\Docker`.
