@@ -2,7 +2,7 @@
 `docker version`: información de las versiones de los componentes.  
 `docker info`: información del sistema que instalado.  
 `docker run image`: crea y corre un contenedor basado en la imagen que indicamos en `image`.  
-`docker ps`: lista los contenedores que se están ejecutando.  
+`docker ps`: lista los contenedores que se están ejecutando.
 * Opciones:
     * `-a`: lista los contenedores que **NO** se están ejecutando.
 
