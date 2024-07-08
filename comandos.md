@@ -1,12 +1,23 @@
 `docker --version`: comprobar la versión.  
 `docker version`: información de las versiones de los componentes.  
 `docker info`: información del sistema que instalado.  
-`docker run image [echo 'command']`: crea y corre un contenedor basado en la imagen que indicamos en `image`. En caso de ser necesario podemos indicerle también el comando a utilizar.   
+`docker run [echo 'command']`: crea y corre un contenedor basado en la imagen que indicamos en `image`. En caso de ser necesario podemos indicerle también el comando a utilizar.  
+* Opciones:
+    * `--name name_container`: para indicarle el nombre del contenedor.
+    * `-h hostname_cointainer`: para indicarle el hostname.
+    * `-i`: para abrir una sesión interactiva.
+    * `-t`: nos permite crear un pseudo-terminal que nos va a permitir interaccionar con el contenedor.
+    * `--rm`: si queremos que cuando finalice la ejecución del contenedor se borre.
+    * `-d`: para que la ejecución de lo que le indiquemos en el contenedor se haga en segundo plano, de manera desatendida, sin estar conectada a la entrada y salida estándar.
+    * `bash -c`: nos permite ejecutar uno o más comandos en el contenedor de forma más compleja.
+    * `-e` o `--env`: para crear una variable de entorno al crear un contenedor.  
 `docker ps`: lista los contenedores que se están ejecutando.
 * Opciones:
     * `-a`: lista los contenedores que **NO** se están ejecutando.
 
 `docker rm [CONTAINER_ID | NAME]`: elimina el conetenedor que indiquemos ya sea por su **id** o por su **name**.  
+* Opciones:
+    * `-f`: para forzar el borrado de un contenedor que está corriendo.  
 `docker create image`: **SOLO** crea un contenedor basado en la imagen `image` pero **NO** lo inicia.  
 `docker start name_container`: inicia la ejecución del contenedor `name_container`.  
 * Opciones:
@@ -17,3 +28,8 @@
 `docker images ls`: nos muestra la lista de imágenes que tenemos en nuestra registro local.
 `docker images list`: nos muestra la lista de imágenes que tenemos en nuestra registro local.
 `docker events`: para ver las distintas etapas por las que pasa la creación de un contenedor. Lo ejecutamos en una terminal, y en otra ejecutamos el contenedor. En la terminal que hemos ejectuado el comando nos aparecerán las operaciones que se han producido.
+`docker attach`: nos conectamos a la entrada estándar y a la salida estándar y de error de un contenedor en ejecución, conectándonos a su terminal.  
+`docker logs name_container`: para visualizar los logs del contenedor `name_container`.
+* Opciones:
+    * `-f`: seguimos visualizando los logs en tiempo real.
+`docker stop name_container`: para parar el contenedor `name_container`.
