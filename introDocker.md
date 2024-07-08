@@ -374,7 +374,7 @@ Digest: sha256:e6173d4dc55e76b87c4af8db8821b1feae4146dd47341e4d431118c7dd060a74
 Status: Downloaded newer image for ubuntu:latest
 docker.io/library/ubuntu:latest
 ```
-
+Los nombres de las imágenes tienen 2 partes, el nombre y una etiqueta. Sino indicamos la etiqueta la utilizada será la latest, que indica que se está bajando la última versión.
 A continuación, creamos y ejecutamos un nuevo contenedor indicando el comando que va a ejecutar:  
 ```
 $ docker run ubuntu echo 'Hello world'
@@ -427,3 +427,89 @@ En el primer terminal veremos las operaciones que se han dio produciendo:
 2024-01-22T21:08:39.392255443+01:00 network disconnect 7e6404027e1ec38230c4dc35f40079c6f6366cd61d73a472517e39f598cebab1 (container=6167a0dbc036143fcd9d3b2783f6d507fbd72900622f8929a5424dee9264e9f5, name=bridge, type=bridge)
 2024-01-22T21:08:40.227050098+01:00 container die 6167a0dbc036143fcd9d3b2783f6d507fbd72900622f8929a5424dee9264e9f5 (execDuration=0, exitCode=0, image=ubuntu, name=loving_jennings, org.opencontainers.image.ref.name=ubuntu, org.opencontainers.image.version=22.04)
 ```
+
+### Más opciones en la ejecución de contenedores  
+
+Hemos usado el comando docker run para crear y ejecutar contenedores. Este comando tiene muchas opciones, veamos algunas de ellas:  
+
+#### Nombrar los contenedores  
+
+A la hora de la creación del contenedor podemos ponerle un nombre (usando el parámetro --name) y también, podemos indicar el hostname (con al opción -h o --hostname). Veamos un ejemplo:  
+```
+$ docker run --name contenedor1 -h contendor_ubuntu ubuntu hostname
+contendor_ubuntu
+```  
+Hemos comprobado que el hostname lo hemos configurado, y veamos que el nombre del contenedor también lo hemos configurado:  
+```
+$ docker ps -a
+CONTAINER ID   IMAGE     COMMAND      CREATED          STATUS                      PORTS     NAMES
+cea2a22ac6aa   ubuntu    "hostname"   56 seconds ago   Exited (0) 54 seconds ago             contenedor1
+```  
+
+#### Ejecutando un contenedor interactivo  
+
+En este caso usamos la opción -i para abrir una sesión interactiva, -t nos permite crear un pseudo-terminal que nos va a permitir interaccionar con el contenedor. El comando que vamos a ejecutar en el contenedor es bash para que podamos acceder al terminal:  
+```
+$ docker run -it --name contenedor2 -h cont2 ubuntu bash 
+root@cont2:/#
+```  
+El contenedor se para cuando salimos de él. Para volver a conectarnos a él:  
+```
+$ docker start contenedor2
+contendor2
+$ docker attach contenedor2
+root@cont1:/#
+```  
+Con docker attach nos conectamos a la entrada estándar y a la salida estándar y de error de un contenedor en ejecución, conectándonos a su terminal.  
+En realidad, todas las imágenes tienen definidas un proceso que se ejecuta por defecto si no se indica de manera explicita cuando creamos el contenedor. En concreto, la imagen ubuntu (y en general todas las imágenes que corresponden al sistemas operativos) tiene definida por defecto el proceso bash, por lo que podríamos haber ejecutado:  
+```
+$ docker run -it --name contenedor2 ubuntu
+```  
+
+#### Eliminación automática de un contenedor  
+
+Como hemos visto hasta ahora cuando un contenedor termina de ejecutar el comando indicado, se para. Si queremos que cuando finalice la ejecución del contenedor se borre, usaremos la opción --rm. Por ejemplo:  
+```
+docker run -it --rm --name contenedor3 ubuntu top
+```  
+Cuando salgamos de ejecutar el comando top se borrará el contenedor. Puedes ejecutar un docker ps -a para comprobarlo.  
+
+#### Ejecutando un contenedor demonio  
+
+En esta ocasión hemos utilizado la opción -d del comando docker run, para que la ejecución del comando en el contenedor se haga en segundo plano, de manera desatendida, sin estar conectada a la entrada y salida estándar.  
+```
+$ docker run -d --name contenedor4 ubuntu bash -c "while true; do echo hello world; sleep 1; done"
+7b6c3b1c0d650445b35a1107ac54610b65a03eda7e4b730ae33bf240982bba08
+```  
+NOTA: En la instrucción docker run hemos ejecutado el comando con bash -c que nos permite ejecutar uno o más comandos en el contenedor de forma más compleja (por ejemplo, indicando ficheros dentro del contenedor).  
+Comprobamos que el contenedor se está ejecutando:  
+```
+$ docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS     NAMES
+c6b1761c8831   ubuntu    "bash -c 'while true…"   5 seconds ago   Up 2 seconds             contenedor4
+```  
+Podemos visualizar los logs del contenedor, ejecutando el siguiente comando:  
+```
+$ docker logs contenedor4
+```  
+Con la opción logs -f seguimos visualizando los logs en tiempo real.  
+Por último podemos parar el contenedor y borrarlo con las siguientes instrucciones:  
+```
+$ docker stop contenedor4
+$ docker rm contenedor4
+```  
+Hay que tener en cuenta que un contenedor que esta ejecutándose no puede ser eliminado. Tendríamos que parar el contenedor y posteriormente borrarlo. Otra opción es borrarlo a la fuerza:  
+```
+$ docker rm -f contenedor4
+```
+
+#### Configuración de contenedores con variables de entorno  
+
+Más adelante veremos que al crear un contenedor que necesita alguna configuración específica, lo que vamos a hacer es crear variables de entorno en el contenedor, para que el proceso que inicializa el contenedor pueda realizar dicha configuración.  
+Para crear una variable de entorno al crear un contenedor usamos el flag -e o --env:  
+```
+$ docker run -it --name contenedor5 -e USUARIO=prueba ubuntu bash
+root@91e81200c633:/# echo $USUARIO
+prueba
+```
+
