@@ -11,3 +11,4 @@
 `docker start name_container`: inicia la ejecución del contenedor `name_container`.  
 * Opciones:
     * `-a`: nos permite conectar a la salida estándar del contenedor y poder ver en nuestro terminal la salida.
+`docker images`: nos muestra la lista de imágenes que tenemos en nuestra registro local.
