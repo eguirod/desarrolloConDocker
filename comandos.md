@@ -24,14 +24,16 @@
 `docker start name_container`: inicia la ejecución del contenedor `name_container`.  
 * Opciones:
     * `-a`: nos permite conectar a la salida estándar del contenedor y poder ver en nuestro terminal la salida.
+
 `docker images`: nos muestra la lista de imágenes que tenemos en nuestra registro local.  
-`docker pull image`: descarga la imagen `image`de Docker Hub.
-`docker rename old_name new_name`: renombrar el nombre del contenedor `old_name` a `new_name`.
-`docker images ls`: nos muestra la lista de imágenes que tenemos en nuestra registro local.
-`docker images list`: nos muestra la lista de imágenes que tenemos en nuestra registro local.
-`docker events`: para ver las distintas etapas por las que pasa la creación de un contenedor. Lo ejecutamos en una terminal, y en otra ejecutamos el contenedor. En la terminal que hemos ejectuado el comando nos aparecerán las operaciones que se han producido.
-`docker attach`: nos conectamos a la entrada estándar y a la salida estándar y de error de un contenedor en ejecución, conectándonos a su terminal.  
-`docker logs name_container`: para visualizar los logs del contenedor `name_container`.
+`docker pull image`: descarga la imagen `image`de Docker Hub.  
+`docker rename old_name new_name`: renombrar el nombre del contenedor `old_name` a `new_name`.  
+`docker images ls`: nos muestra la lista de imágenes que tenemos en nuestra registro local.  
+`docker images list`: nos muestra la lista de imágenes que tenemos en nuestra registro local.  
+`docker events`: para ver las distintas etapas por las que pasa la creación de un contenedor. Lo ejecutamos en una terminal, y en otra ejecutamos el contenedor. En la terminal que hemos ejectuado el comando nos aparecerán las operaciones que se han producido.  
+`docker attach`: nos conectamos a la entrada estándar y a la salida estándar y de error de un contenedor en ejecución, conectándonos a su terminal.    
+`docker logs name_container`: para visualizar los logs del contenedor `name_container`.  
 * Opciones:
     * `-f`: seguimos visualizando los logs en tiempo real.
+
 `docker stop name_container`: para parar el contenedor `name_container`.
