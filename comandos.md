@@ -18,7 +18,8 @@
 
 `docker rm [CONTAINER_ID | NAME]`: elimina el conetenedor que indiquemos ya sea por su **id** o por su **name**.  
 * Opciones:
-    * `-f`: para forzar el borrado de un contenedor que está corriendo.  
+    * `-f`: para forzar el borrado de un contenedor que está corriendo.
+
 `docker create image`: **SOLO** crea un contenedor basado en la imagen `image` pero **NO** lo inicia.  
 `docker start name_container`: inicia la ejecución del contenedor `name_container`.  
 * Opciones:
