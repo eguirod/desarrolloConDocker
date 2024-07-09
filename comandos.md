@@ -11,6 +11,7 @@
     * `-d`: para que la ejecución de lo que le indiquemos en el contenedor se haga en segundo plano, de manera desatendida, sin estar conectada a la entrada y salida estándar.
     * `bash -c`: nos permite ejecutar uno o más comandos en el contenedor de forma más compleja.
     * `-e` o `--env`: para crear una variable de entorno al crear un contenedor.  
+
 `docker ps`: lista los contenedores que se están ejecutando.
 * Opciones:
     * `-a`: lista los contenedores que **NO** se están ejecutando.
