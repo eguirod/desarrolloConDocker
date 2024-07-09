@@ -513,3 +513,133 @@ root@91e81200c633:/# echo $USUARIO
 prueba
 ```
 
+### Gestión de contenedores Docker  
+
+#### Ciclo de vida de los contenedores  
+
+Para ver un ejemplo de los comandos que gestionan el ciclo de vida de un contenedor vamos a ejecutar un contenedor demonio que va escribiendo la hora cada segundo, para ver la salida visualizamos sus logs:
+```
+$ docker run -d --name hora-container ubuntu bash -c 'while true; do echo $(date +"%T"); sleep 1; done'
+$ docker logs -f hora-container
+```
+
+En otra terminal vamos ejecutando los comandos que nos permiten controlar su ciclo de vida:  
+`docker start`: Inicia la ejecución de un contenedor que está parado.  
+`docker stop`: Detiene la ejecución de un contenedor en ejecución.  
+`docker restart`: Para y vuelve a iniciar la ejecución de un contenedor.  
+`docker pause`: Pausa la ejecución de un contenedor.  
+`docker unpause`: Continúa la ejecución de un contenedor que estaba pausado.  
+
+#### Ejecución de comandos en contenedores  
+
+Si tenemos un contenedor que está iniciado, podemos ejecutar comandos en él con `docker exec`. En esta ocasión vamos a crear un contenedor que hace algo parecido al anterior, pero en este caso guarda la hora en un fichero cada segundo:  
+```
+$ docker run -d --name hora-container2 ubuntu bash -c 'while true; do date +"%T" >> hora.txt; sleep 1; done'
+$ docker exec hora-container2 ls
+...
+hora.txt
+...
+$  docker exec hora-container2 cat hora.txt
+```
+
+#### Copiar ficheros en contenedores  
+
+Con el comando docker cp podemos copiar ficheros a o desde un contenedor. Por ejemplo, si tengo un fichero en mi equipo lo puedo copiar al contenedor:
+```
+$ echo "Curso Docker">docker.txt
+$ docker cp docker.txt hora-container2:/tmp
+Successfully copied 2.05kB to hora-container2:/tmp
+```
+
+Podemos comprobar que el fichero existe en el contenedor:
+```
+$ docker exec hora-container2 cat /tmp/docker.txt
+Curso Docker
+```
+
+Evidentemente, también podemos copiar ficheros desde el contenedor a nuestro equipo:
+```
+docker cp hora-container2:hora.txt .
+Successfully copied 5.63kB to /home/usuario/.
+```
+
+#### Visualizar procesos que se ejecutan en un contenedor  
+
+Podemos visualizar los procesos que se están ejecutando en un contenedor con el comando docker top:
+```
+$ docker top hora-container2
+```  
+
+#### Obtener información de los contenedores  
+
+Para obtener información de cualquier objeto Docker vamos a usar el subcomando inspect. En el caso de los contenedores, ejecutamos:
+```
+$ docker inspect hora-container2
+```
+
+Nos muestra mucha información en formato JSON (JavaScript Object Notation) y nos da datos sobre aspectos como:
+* El id del contenedor.
+* Los puertos abiertos y sus redirecciones.
+* Los bind mounts y volúmenes usados.
+* El tamaño del contenedor (si ejecutamos docker inspect -s).
+* La configuración de red del contenedor.
+* El comando que se esta ejecutando en el contenedor.
+* El valor de las variables de entorno.
+* Y muchas más cosas...  
+
+Como nos devuelve mucha información podemos filtrar los campos que nos interesan, por ejemplo:  
+El identificado del contenedor: `$ docker inspect --format='{{.Id}}' hora-container2`  
+El nombre de la imagen que hemos usado para crear el contenedor: `$ docker inspect --format='{{.Config.Image}}' hora-container2`  
+El valor de las variables de entorno definidas en el contenedor: `$ docker container inspect -f '{{range .Config.Env}}{{println .}}{{end}}' hora-container2`  
+El comando que hemos ejecutado en el contenedor: `$ docker inspect --format='{{range .Config.Cmd}}{{println .}}{{end}}' hora-container2`  
+La dirección IP que tiene el contenedor: `$ docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' hora-container2`  
+
+### Ejemplo: Creando un contenedor con un servidor web  
+
+En este ejemplo vamos a crear un contenedor demonio que ejecuta un servidor web Apache, para ello vamos a usar la imagen httpd:2.4 del registro Docker Hub (en este caso hemos indicado el nombre de la imagen y su etiqueta 2.4 que nos indica la versión del servidor web que vamos a usar):
+```
+$ docker run -d --name my-apache-app -p 8080:80 httpd:2.4
+```  
+
+Hay que tener en cuenta que los contenedores que estamos creando se conectan a una red virtual privada y que toman direccionamiento dinámico. No solemos usar la dirección IP del contenedor para acceder al servicio que nos ofrece. Con la opción `-p` mapeamos un puerto del Host Docker, con el puerto del servicio ofrecido por el contenedor. Si accedemos a la dirección IP del ordenador que tiene instalado Docker al primer puerto indicado, se redireccionará la petición a la dirección IP del contenedor al segundo puerto indicado. Nunca utilizamos directamente la dirección IP del contenedor para acceder a él.  
+
+Podemos ver los puertos que están mapeados en un contenedor de dos maneras distintas. Usando el comando docker port:
+```
+$ docker port my-apache-app
+80/tcp -> 0.0.0.0:8080
+80/tcp -> [::]:8080
+```  
+O utilizando el comando docker inspect con un filtro:
+```
+$ docker inspect --format='{{range $p, $conf := .NetworkSettings.Ports}}  {{(index $conf 0).HostPort}} -> {{$p}} {{end}}' my-apache-app
+```  
+Para probarlo accedemos desde un navegador web.  
+* Si estamos accediendo desde el Host Docker, accederemos a http://localhost:8080.  
+* Si estamos accediendo desde un ordenador remoto, accederemos a la dirección IP del Host Docker y al puerto, por ejemplo,si dirección IP del Host Docker es 192.168.121.54, accederemos a http://192.168.121.54:8080:
+
+Para acceder al log del contenedor podemos ejecutar:
+```
+$ docker logs my-apache-app
+```
+
+#### Modificación del contenido servido por el servidor web  
+
+Si consultamos la documentación de la imagen httpd en el registro Docker Hub, podemos determinar que el servidor web que se ejecuta en el contenedor guarda los ficheros que sirve (directorio DocumentRoot) en `/usr/local/apache2/htdocs/`. Vamos a crear un nuevo fichero index.html en ese directorio.  
+Lo podemos hacer de varias formas:
+* Accediendo de forma interactiva al contenedor y haciendo la modificación:
+```
+$ docker exec -it my-apache-app bash
+root@cf3cd01a4993:/usr/local/apache2# cd /usr/local/apache2/htdocs/
+root@cf3cd01a4993:/usr/local/apache2/htdocs# echo "<h1>Curso Docker</h1>" > index.html
+root@cf3cd01a4993:/usr/local/apache2/htdocs# exit
+```  
+* Ejecutando directamente el comando de creación del fichero index.html en el contenedor:
+```
+$ docker exec my-apache-app bash -c 'echo "<h1>Curso Docker</h1>" > /usr/local/apache2/htdocs/index.html'
+```  
+* Usando el comando docker cp y copiando el fichero index.html al contenedor:
+``` 
+$ echo "<h1>Curso Docker</h1>" > index.html
+$ docker cp index.html  my-apache-app:/usr/local/apache2/htdocs/
+```  
+Independientemente de cómo hayamos creado el fichero, podemos volver a acceder al servidor web y comprobar que efectivamente hemos cambiado el contenido del index.html.  
