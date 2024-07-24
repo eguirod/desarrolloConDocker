@@ -11,11 +11,13 @@
     * `-d`: para que la ejecución de lo que le indiquemos en el contenedor se haga en segundo plano, de manera desatendida, sin estar conectada a la entrada y salida estándar.
     * `bash -c`: nos permite ejecutar uno o más comandos en el contenedor de forma más compleja.
     * `-e` o `--env`: para crear una variable de entorno al crear un contenedor.
-    * `-p`: para mapear un puerto del Host Docker, con el puerto del servicio ofrecido por el contenedor ya que los contenedores que estamos creando se conectan a una red virtual privada y que toman direccionamiento dinámico. 
+    * `-p`: para mapear un puerto del Host Docker, con el puerto del servicio ofrecido por el contenedor ya que los contenedores que estamos creando se conectan a una red virtual privada y que toman direccionamiento dinámico.
+    * `-l`: para etiquetar un contenedor en su creación.
 
 `docker ps`: lista los contenedores que se están ejecutando.
 * Opciones:
     * `-a`: lista los contenedores que **NO** se están ejecutando.
+    * `--filter`: para filtrar.
 
 `docker rm [CONTAINER_ID | NAME]`: elimina el conetenedor que indiquemos ya sea por su **id** o por su **name**.  
 * Opciones:
