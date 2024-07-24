@@ -643,3 +643,109 @@ $ echo "<h1>Curso Docker</h1>" > index.html
 $ docker cp index.html  my-apache-app:/usr/local/apache2/htdocs/
 ```  
 Independientemente de cómo hayamos creado el fichero, podemos volver a acceder al servidor web y comprobar que efectivamente hemos cambiado el contenido del index.html.  
+
+### Ejemplo: Configuración de un contenedor con la imagen MariaDB  
+
+En ocasiones es obligatorio el inicializar alguna variable de entorno para que el contenedor pueda ser ejecutado. Si miramos la documentación en Docker Hub de la imagen mariadb, observamos que podemos definir algunas variables de entorno para la creación y configuración del contenedor (por ejemplo: MARIADB_DATABASE,MARIADB_USER, MARIADB_PASSWORD,...). Pero hay una que la tenemos que indicar de forma obligatoria, la contraseña del usuario root (MARIADB_ROOT_PASSWORD), por lo tanto:
+```  
+$ docker run -d --name mimariadb -e MARIADB_ROOT_PASSWORD=my-secret-pw mariadb:10.5
+$ $ docker ps
+CONTAINER ID   IMAGE       COMMAND                  CREATED          STATUS         PORTS             NAMES
+09425481aee6   mariadb     "docker-entrypoint.s…"   22 seconds ago   Up 1 second    3306/tcp          mimariadb
+```
+
+Podemos ver que se ha creado una variable de entorno:
+```  
+$ docker exec -it mimariadb env
+...
+MARIADB_ROOT_PASSWORD=my-secret-pw
+...
+```
+
+Y para acceder podemos ejecutar:
+```
+$ docker exec -it mimariadb bash
+root@9c3effd891e3:/# mysql -u root -p"$MARIADB_ROOT_PASSWORD" 
+...
+
+MariaDB [(none)]>
+```  
+
+Otra forma de hacerlo sería:
+```
+$ docker exec -it mimariadb mysql -u root -p -h 127.0.0.1
+Enter password: 
+...
+MariaDB [(none)]>
+```
+
+#### Accediendo a servidor de base de datos desde el exterior  
+
+En el ejemplo anterior hemos accedido a la base de datos de dos formas:
+1. Ejecutado un comando bash para acceder al contenedor y desde dentro hemos utilizado el cliente de MariaDB para acceder a la base de datos.
+2. Ejecutando directamente en el contenedor el cliente de MariaDB.  
+
+En esta ocasión vamos a mapear los puertos para acceder desde el exterior a la base de datos:
+1. Lo primero que vamos a hacer es eliminar el contenedor anterior: `$ docker rm -f mimariadb`
+2. Y a continuación vamos a crear otro contenedor, pero en esta ocasión vamos a mapear el puerto 3306/tcp del Host Docker con el puerto 3306/tcp del contenedor:
+```
+$ docker run -d -p 3306:3306 --name mimariadb -e MARIADB_ROOT_PASSWORD=my-secret-pw mariadb:10.5
+```
+
+Comprobamos que los puertos se han mapeado y que el contenedor está ejecutándose:
+```
+$ docker ps
+CONTAINER ID   IMAGE       COMMAND                  CREATED          STATUS          PORTS                                       NAMES
+8d1857ff1d2f   mariadb     "docker-entrypoint.s…"   14 seconds ago   Up 11 seconds   0.0.0.0:3306->3306/tcp, :::3306->3306/tcp   mimariadb
+```
+
+Ahora desde nuestro equipo, donde hemos instalado un cliente de MariaDB (sudo apt install mariadb-client), nos conectamos al Host Docker:
+```
+$ mysql -u root -p -h 127.0.0.1
+Enter password: 
+...
+MariaDB [(none)]>
+```
+
+### Etiquetando los contenedores con Labels  
+
+Las etiquetas son un mecanismo para guardar metadatos en los objetos Docker: en contenedores, imágenes, volúmenes, redes, etc. Podemos utilizar etiquetas para organizar los distintos objetos Docker que estemos utilizando.  
+
+Una etiqueta es una información del tipo clave-valor, almacenado como una cadena. Puede especificar varias etiquetas para un objeto, pero cada clave debe ser única dentro de un objeto.  
+
+Para etiquetar un contenedor en su creación utilizaremos el parámetro -l (--label). Vamos a crear varios contenedores con distintas etiquetas:
+```
+$ docker run -l servicio=web -l entorno=desarrollo -l aplicacion=apache --name prueba_web ubuntu
+$ docker run -l servicio=bd -l entorno=desarrollo -l aplicacion=mysql --name prueba_bd ubuntu
+$ docker run -l servicio=web -l entorno=produccion --name web ubuntu
+$ docker run -l servicio=bd -l entorno=produccion --name bd ubuntu
+
+$ docker ps -a
+CONTAINER ID   IMAGE     COMMAND       CREATED          STATUS                      PORTS     NAMES
+6b5742b82a07   ubuntu    "/bin/bash"   7 seconds ago    Exited (0) 5 seconds ago              bd
+30d6f1a83749   ubuntu    "/bin/bash"   19 seconds ago   Exited (0) 17 seconds ago             web
+3d2ebb7ecfde   ubuntu    "/bin/bash"   39 seconds ago   Exited (0) 36 seconds ago             prueba_bd
+553675a1457e   ubuntu    "/bin/bash"   52 seconds ago   Exited (0) 50 seconds ago             prueba_web
+```
+
+Hay que tener en cuenta que estos contenedores tendrán además de las etiquetas indicadas en su creación, las etiquetas que estén definidas en la imagen que hemos utilizado para su creación.  
+
+A la hora de listar los contenedores podemos filtrar por varios criterios, entre ellos podemos usar las etiquetas para hacer el filtro.  
+
+Por ejemplo, mostrar los contenedores que tienen una etiqueta aplicacion: `$ docker ps -a --filter="label=aplicacion"`  
+
+Mostrar los contenedores que tienen la etiqueta entorno con el valor produccion: `$ docker ps -a --filter="label=entorno=produccion"`  
+
+Por último, mostrar los contenedores cuyo servicio es web en el entorno de producción: `$ docker ps -a --filter="label=entorno=produccion" --filter="label=servicio=web"`   
+
+Para terminar este apartado veamos un filtro que nos devuelve las etiquetas usando el comando docker inspect, por ejemplo:
+```
+$ docker inspect --format '{{range $key, $value := .Config.Labels}}{{$key}}: {{$value}}{{"\n"}}{{end}}' prueba_web
+aplicacion: apache
+entorno: desarrollo
+org.opencontainers.image.ref.name: ubuntu
+org.opencontainers.image.version: 22.04
+servicio: web
+```
+
+Como observamos, este contenedor tiene 5 etiquetas, las tres que hemos indicado en su creación, y dos definidas en la imagen ubuntu.
