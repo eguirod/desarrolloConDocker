@@ -10,7 +10,8 @@
     * `--rm`: si queremos que cuando finalice la ejecución del contenedor se borre.
     * `-d`: para que la ejecución de lo que le indiquemos en el contenedor se haga en segundo plano, de manera desatendida, sin estar conectada a la entrada y salida estándar.
     * `bash -c`: nos permite ejecutar uno o más comandos en el contenedor de forma más compleja.
-    * `-e` o `--env`: para crear una variable de entorno al crear un contenedor.  
+    * `-e` o `--env`: para crear una variable de entorno al crear un contenedor.
+    * `-p`: para mapear un puerto del Host Docker, con el puerto del servicio ofrecido por el contenedor ya que los contenedores que estamos creando se conectan a una red virtual privada y que toman direccionamiento dinámico. 
 
 `docker ps`: lista los contenedores que se están ejecutando.
 * Opciones:
@@ -49,3 +50,6 @@
 * El valor de las variables de entorno definidas en el contenedor: `$ docker container inspect -f '{{range .Config.Env}}{{println .}}{{end}}' hora-container2`  
 * El comando que hemos ejecutado en el contenedor: `$ docker inspect --format='{{range .Config.Cmd}}{{println .}}{{end}}' hora-container2`  
 * La dirección IP que tiene el contenedor: `$ docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' hora-container2`
+* Puertos que están mapeados de un contenedor: `$ docker inspect --format='{{range $p, $conf := .NetworkSettings.Ports}}  {{(index $conf 0).HostPort}} -> {{$p}} {{end}}' name_container`  
+
+`docker port name_container`: ver los puertos que están mapeados en un contenedor.  
